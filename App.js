@@ -35,7 +35,7 @@ export default class App extends React.Component {
                         <Login
                             textSize={eStyles.textSize}
                             textColor={eStyles.textColor}
-                            title={"Welcome to CRM-App"}
+                            title={"Login or Create Account"}
                         />
                     </Row>
                     <Row size={0} />
