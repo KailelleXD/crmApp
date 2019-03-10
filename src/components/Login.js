@@ -11,13 +11,18 @@ import {
 } from "native-base";
 
 export default class Login extends Component {
-    state = {
-        email: "",
-        password: ""
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: "",
+            password: ""
+        };
+    }
 
     onButtonPress() {
         console.log("button has been clicked!");
+        console.log(`username: ${this.state.username}`)
+        console.log(`password: ${this.state.password}`)
     }
 
     render() {
@@ -31,12 +36,35 @@ export default class Login extends Component {
                 <Content>
                     <Form>
                         <Item>
-                            <Input placeholder="Username" />
+                            <Input
+                                placeholder="Username"
+                                onChangeText={username => {
+                                    this.setState({
+                                        username: username
+                                    }, () => {
+                                        console.log(this.state.username);
+                                    });
+                                }}
+                            />
                         </Item>
                         <Item last>
-                            <Input placeholder="Password" />
+                            <Input
+                                placeholder="Password"
+                                secureTextEntry={true}
+                                onChangeText={password => {
+                                    this.setState({
+                                        password: password
+                                    }, () => {
+                                        console.log(this.state.password);
+                                    });
+                                }}
+                            />
                         </Item>
-                        <Button rounded style={styles.buttonStyle}>
+                        <Button
+                            rounded
+                            style={styles.buttonStyle}
+                            onPress={this.onButtonPress.bind(this)}
+                        >
                             <Text
                                 style={[
                                     styles.buttonTextStyle,
@@ -61,22 +89,22 @@ const styles = StyleSheet.create({
         margin: "5%",
         borderColor: "#000",
         borderWidth: 2,
-        borderRadius: 27,
+        borderRadius: 27
     },
     headerStyle: {
         alignItems: "center",
         justifyContent: "center",
         borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
+        borderTopRightRadius: 25
     },
     buttonStyle: {
         width: "95%",
         alignSelf: "center",
         justifyContent: "flex-end",
-        marginTop: '5%',
+        marginTop: "5%",
     },
     buttonTextStyle: {
         fontWeight: "bold",
-        padding: "5%",
+        padding: "5%"
     }
 });
