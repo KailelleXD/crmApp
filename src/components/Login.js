@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { Text, StyleSheet } from "react-native";
 import {
     Container,
     Header,
@@ -8,17 +8,17 @@ import {
     Form,
     Item,
     Input
-} from 'native-base';
-import firebase from 'firebase';
-import Loader from './Loader';
+} from "native-base";
+import firebase from "firebase";
+import Loader from "./Loader";
 
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            error: '',
+            username: "",
+            password: "",
+            error: "",
             loading: false
         };
     }
@@ -26,35 +26,38 @@ export default class Login extends Component {
     onButtonPress() {
         const { username, password } = this.state;
         this.setState({
-            error: '',
+            error: "",
             loading: true
         });
 
         setTimeout(() => {
-            console.log('timeout!')
-            firebase.auth().signInWithEmailAndPassword(username, password)
+            console.log("timeout!");
+            firebase
+                .auth()
+                .signInWithEmailAndPassword(username, password)
                 .then(this.onAuthSuccess.bind(this))
                 .catch(() => {
-                    firebase.auth().createUserWithEmailAndPassword(username, password)
+                    firebase
+                        .auth()
+                        .createUserWithEmailAndPassword(username, password)
                         .then(this.onAuthSuccess.bind(this))
-                        .catch(this.onAuthFailed.bind(this))
-                })
+                        .catch(this.onAuthFailed.bind(this));
+                });
         }, 3000);
-
     }
 
     onAuthSuccess() {
         this.setState({
-            username: '',
-            password: '',
-            error: '',
+            username: "",
+            password: "",
+            error: "",
             loading: false
         });
     }
 
     onAuthFailed() {
         this.setState({
-            error: 'Authentication Failed',
+            error: "Authentication Failed",
             loading: false
         });
     }
@@ -66,7 +69,10 @@ export default class Login extends Component {
             return (
                 <Button
                     rounded
-                    style={styles.buttonStyle}
+                    style={[
+                        styles.buttonStyle,
+                        this.ifErrorStyle()
+                        ]}
                     onPress={this.onButtonPress.bind(this)}
                 >
                     <Text
@@ -82,7 +88,7 @@ export default class Login extends Component {
     // RENDER FUNCTIONS ////
 
     ifErrorStyle() {
-        if(this.state.error === '') {
+        if (this.state.error === "" || this.state.loading === true) {
             return styles.noError;
         } else {
             return styles.withError;
@@ -91,10 +97,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <Container style={[
-                    styles.container,
-                    this.ifErrorStyle()
-                ]}>
+            <Container style={styles.container}>
                 <Header style={styles.headerStyle}>
                     <Text style={[this.props.textSize, this.props.textColor]}>
                         {this.props.title}
@@ -147,6 +150,7 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
+        aspectRatio: 1.5 / 1,
         backgroundColor: "#FFFFF0",
         margin: "5%",
         borderColor: "#000",
@@ -154,10 +158,10 @@ const styles = StyleSheet.create({
         borderRadius: 27
     },
     noError: {
-        aspectRatio: 1.59 / 1,
+        marginTop: "8%",
     },
     withError: {
-        aspectRatio: 1.5 / 1,
+        marginTop: "4.5%",
     },
     headerStyle: {
         alignItems: "center",
@@ -168,16 +172,16 @@ const styles = StyleSheet.create({
     buttonStyle: {
         width: "95%",
         alignSelf: "center",
-        justifyContent: "flex-end",
-        marginTop: "5%"
+        justifyContent: "center",
     },
     buttonTextStyle: {
         fontWeight: "bold",
-        padding: "5%"
+        width: "100%",
+        textAlign: "center"
     },
     errorMessage: {
         color: "#FF0000",
-        alignSelf: 'center',
+        alignSelf: "center",
         margin: 0
     }
 });
