@@ -1,80 +1,82 @@
-import React, { Component } from 'react'
-import { 
-    Text, 
-    StyleSheet, 
-    View 
-} from 'react-native'
+import React, { Component } from "react";
+import { Text, StyleSheet } from "react-native";
 import {
-    MKTextField,
-    MKColor,
-    MKButton,
-} from 'react-native-material-kit';
-
-// HELPER FUNCTIONS ////
-
-const LoginButton = MKButton.coloredButton()
-    .withText('LOGIN')
-    .build();
+    Container,
+    Header,
+    Button,
+    Content,
+    Form,
+    Item,
+    Input
+} from "native-base";
 
 export default class Login extends Component {
     state = {
-        email: '',
-        passwword: '',
-    }
+        email: "",
+        password: ""
+    };
 
     onButtonPress() {
-        console.log('button has been clicked!')
+        console.log("button has been clicked!");
     }
 
-  render() {
-
-    const { form, fieldStyles, loginButtonArea, errorMessage } = styles;
-
-    return (
-      <View>
-        <Text> This is Login.js </Text>
-        <MKTextField
-            text={this.state.email}
-            onTextChange={email => this.setState({
-                email
-            })}
-            textInputStyle={fieldStyles}
-            placeholder={'Email...'}
-            tintColor={MKColor.Teal}
-        />
-        <MKTextField
-            text={this.state.password}
-            onTextChange={password => this.setState({
-                password
-            })}
-            textInputStyle={fieldStyles}
-            placeholder={'Password...'}
-            tintColor={MKColor.Teal}
-            password={true}
-        />
-        <Text style={errorMessage}>
-            {this.state.error}
-        </Text>
-        <View style={loginButtonArea}>
-            <LoginButton onPress={this.onButtonPress.bind(this)} />
-        </View>
-      </View>
-    )
-  }
+    render() {
+        return (
+            <Container style={styles.container}>
+                <Header style={styles.headerStyle}>
+                    <Text style={[this.props.textSize, this.props.textColor]}>
+                        {this.props.title}
+                    </Text>
+                </Header>
+                <Content>
+                    <Form>
+                        <Item>
+                            <Input placeholder="Username" />
+                        </Item>
+                        <Item last>
+                            <Input placeholder="Password" />
+                        </Item>
+                        <Button rounded style={styles.buttonStyle}>
+                            <Text
+                                style={[
+                                    styles.buttonTextStyle,
+                                    this.props.textColor
+                                ]}
+                            >
+                                Login
+                            </Text>
+                        </Button>
+                    </Form>
+                </Content>
+            </Container>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-    form: {
-        paddingBottom: 10,
-        width: 200,
+    container: {
+        width: "100%",
+        aspectRatio: 1.6 / 1,
+        backgroundColor: "#FFFFF0",
+        margin: "5%",
+        borderColor: "#000",
+        borderWidth: 2,
+        borderRadius: 27,
     },
-    fieldStyles: {
-        height: 40,
-        color: MKColor.Orange,
-        width: 200,
+    headerStyle: {
+        alignItems: "center",
+        justifyContent: "center",
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
     },
-    loginButtonArea: {
-        marginTop: 20,
+    buttonStyle: {
+        width: "95%",
+        alignSelf: "center",
+        justifyContent: "flex-end",
+        marginTop: '5%',
     },
+    buttonTextStyle: {
+        fontWeight: "bold",
+        padding: "5%",
+    }
 });
-
