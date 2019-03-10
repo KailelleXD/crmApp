@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Dimensions } from "react-native";
 import {
     Container,
     Header,
@@ -9,8 +9,11 @@ import {
     Item,
     Input
 } from "native-base";
+import EStyleSheet from "react-native-extended-stylesheet";
 import firebase from "firebase";
 import Loader from "./Loader";
+
+const { height, width } = Dimensions.get("window");
 
 export default class Login extends Component {
     constructor(props) {
@@ -29,6 +32,8 @@ export default class Login extends Component {
             error: "",
             loading: true
         });
+
+        console.log(width);
 
         setTimeout(() => {
             console.log("timeout!");
@@ -89,17 +94,17 @@ export default class Login extends Component {
 
     ifErrorStyle() {
         if (this.state.error === "" || this.state.loading === true) {
-            return styles.noError;
+            return eStyles.noError;
         } else {
-            return styles.withError;
+            return eStyles.withError;
         }
     }
 
     render() {
         return (
-            <Container style={styles.container}>
+            <Container style={[styles.container, eStyles.eContainerStyle]}>
                 <Header style={styles.headerStyle}>
-                    <Text style={[this.props.textSize, this.props.textColor]}>
+                    <Text style={[this.props.headerSize, this.props.textColor]}>
                         {this.props.title}
                     </Text>
                 </Header>
@@ -107,6 +112,7 @@ export default class Login extends Component {
                     <Form>
                         <Item>
                             <Input
+                                style={this.props.inputSize}
                                 placeholder="Username"
                                 onChangeText={username => {
                                     this.setState(
@@ -122,6 +128,7 @@ export default class Login extends Component {
                         </Item>
                         <Item last>
                             <Input
+                                style={this.props.inputSize}
                                 placeholder="Password"
                                 secureTextEntry={true}
                                 onChangeText={password => {
@@ -147,21 +154,41 @@ export default class Login extends Component {
     }
 }
 
+const eStyles = EStyleSheet.create({
+    eContainerStyle: {
+        width: '100%',
+        borderRadius: '0.12 * 15.5rem'
+    },
+    '@media (min-width: 350)': {
+        eContainerStyle: {
+            height: '15.5rem',
+        },
+    },
+    '@media (max-width: 350)': {
+        eContainerStyle: {
+            height: '16rem',
+        },
+        noError: {
+            marginTop: '1.3rem',
+        },
+        withError: {
+            marginTop: '1.3rem',
+        },
+    },
+    noError: {
+        marginTop: '1.2rem',
+    },
+    withError: {
+        marginTop: '.8rem',
+    },
+});
+
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
-        aspectRatio: 1.5 / 1,
         backgroundColor: "#FFFFF0",
         margin: "5%",
         borderColor: "#000",
         borderWidth: 2,
-        borderRadius: 27
-    },
-    noError: {
-        marginTop: "8%",
-    },
-    withError: {
-        marginTop: "4.5%",
     },
     headerStyle: {
         alignItems: "center",
