@@ -15,14 +15,35 @@ export default class Login extends Component {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            loading: false
         };
     }
 
     onButtonPress() {
         console.log("button has been clicked!");
-        console.log(`username: ${this.state.username}`)
-        console.log(`password: ${this.state.password}`)
+        console.log(`username: ${this.state.username}`);
+        console.log(`password: ${this.state.password}`);
+    }
+
+    renderLoader() {
+        if (this.state.loading) {
+            return <Loader size="large" />;
+        } else {
+            return (
+                <Button
+                    rounded
+                    style={styles.buttonStyle}
+                    onPress={this.onButtonPress.bind(this)}
+                >
+                    <Text
+                        style={[styles.buttonTextStyle, this.props.textColor]}
+                    >
+                        Login
+                    </Text>
+                </Button>
+            );
+        }
     }
 
     render() {
@@ -39,11 +60,14 @@ export default class Login extends Component {
                             <Input
                                 placeholder="Username"
                                 onChangeText={username => {
-                                    this.setState({
-                                        username: username
-                                    }, () => {
-                                        console.log(this.state.username);
-                                    });
+                                    this.setState(
+                                        {
+                                            username: username
+                                        },
+                                        () => {
+                                            console.log(this.state.username);
+                                        }
+                                    );
                                 }}
                             />
                         </Item>
@@ -52,28 +76,18 @@ export default class Login extends Component {
                                 placeholder="Password"
                                 secureTextEntry={true}
                                 onChangeText={password => {
-                                    this.setState({
-                                        password: password
-                                    }, () => {
-                                        console.log(this.state.password);
-                                    });
+                                    this.setState(
+                                        {
+                                            password: password
+                                        },
+                                        () => {
+                                            console.log(this.state.password);
+                                        }
+                                    );
                                 }}
                             />
                         </Item>
-                        <Button
-                            rounded
-                            style={styles.buttonStyle}
-                            onPress={this.onButtonPress.bind(this)}
-                        >
-                            <Text
-                                style={[
-                                    styles.buttonTextStyle,
-                                    this.props.textColor
-                                ]}
-                            >
-                                Login
-                            </Text>
-                        </Button>
+                        {this.renderLoader()}
                     </Form>
                 </Content>
             </Container>
@@ -101,7 +115,7 @@ const styles = StyleSheet.create({
         width: "95%",
         alignSelf: "center",
         justifyContent: "flex-end",
-        marginTop: "5%",
+        marginTop: "5%"
     },
     buttonTextStyle: {
         fontWeight: "bold",
