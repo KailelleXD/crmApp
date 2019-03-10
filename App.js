@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import firebase from "firebase";
 
@@ -11,8 +11,6 @@ EStyleSheet.build({
     $rem: 16,
     $textColor: '#fff'
 });
-
-const { height, width } = Dimensions.get("window");
 
 export default class App extends React.Component {
     componentWillMount() {
@@ -33,7 +31,8 @@ export default class App extends React.Component {
                     <Row size={0} />
                     <Row size={2}>
                         <Login
-                            textSize={eStyles.textSize}
+                            headerSize={eStyles.headerSize}
+                            inputSize={eStyles.inputSize}
                             textColor={eStyles.textColor}
                             title={"Login or Create Account"}
                         />
@@ -46,9 +45,12 @@ export default class App extends React.Component {
 }
 
 const eStyles = EStyleSheet.create({
-    textSize: {
-        fontSize: "1.5rem",
+    headerSize: {
+        fontSize: '1.5rem',
         color: '$textColor',
+    },
+    inputSize: {
+        fontSize: '1rem'
     },
     textColor: {
       color: '$textColor',
