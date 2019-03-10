@@ -19,7 +19,7 @@ export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
+            email: "",
             password: "",
             error: "",
             loading: false
@@ -27,33 +27,28 @@ export default class Login extends Component {
     }
 
     onButtonPress() {
-        const { username, password } = this.state;
+        const { email, password } = this.state;
         this.setState({
             error: "",
             loading: true
         });
 
-        console.log(width);
-
-        setTimeout(() => {
-            console.log("timeout!");
-            firebase
-                .auth()
-                .signInWithEmailAndPassword(username, password)
-                .then(this.onAuthSuccess.bind(this))
-                .catch(() => {
-                    firebase
-                        .auth()
-                        .createUserWithEmailAndPassword(username, password)
-                        .then(this.onAuthSuccess.bind(this))
-                        .catch(this.onAuthFailed.bind(this));
-                });
-        }, 3000);
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(this.onAuthSuccess.bind(this))
+            .catch(() => {
+                firebase
+                    .auth()
+                    .createUserWithEmailAndPassword(email, password)
+                    .then(this.onAuthSuccess.bind(this))
+                    .catch(this.onAuthFailed.bind(this));
+            });
     }
 
     onAuthSuccess() {
         this.setState({
-            username: "",
+            email: "",
             password: "",
             error: "",
             loading: false
@@ -74,10 +69,7 @@ export default class Login extends Component {
             return (
                 <Button
                     rounded
-                    style={[
-                        styles.buttonStyle,
-                        this.ifErrorStyle()
-                        ]}
+                    style={[styles.buttonStyle, this.ifErrorStyle()]}
                     onPress={this.onButtonPress.bind(this)}
                 >
                     <Text
@@ -113,14 +105,14 @@ export default class Login extends Component {
                         <Item>
                             <Input
                                 style={this.props.inputSize}
-                                placeholder="Username"
-                                onChangeText={username => {
+                                placeholder="Email"
+                                onChangeText={email => {
                                     this.setState(
                                         {
-                                            username: username
+                                            email: email
                                         },
                                         () => {
-                                            console.log(this.state.username);
+                                            console.log(this.state.email);
                                         }
                                     );
                                 }}
@@ -156,31 +148,31 @@ export default class Login extends Component {
 
 const eStyles = EStyleSheet.create({
     eContainerStyle: {
-        width: '100%',
-        borderRadius: '0.12 * 15.5rem'
+        width: "100%",
+        borderRadius: "0.12 * 15.5rem"
     },
-    '@media (min-width: 350)': {
+    "@media (min-width: 350)": {
         eContainerStyle: {
-            height: '15.5rem',
-        },
+            height: "15.5rem"
+        }
     },
-    '@media (max-width: 350)': {
+    "@media (max-width: 350)": {
         eContainerStyle: {
-            height: '16rem',
+            height: "16rem"
         },
         noError: {
-            marginTop: '1.3rem',
+            marginTop: "1.3rem"
         },
         withError: {
-            marginTop: '1.3rem',
-        },
+            marginTop: "1.3rem"
+        }
     },
     noError: {
-        marginTop: '1.2rem',
+        marginTop: "1.2rem"
     },
     withError: {
-        marginTop: '.8rem',
-    },
+        marginTop: ".8rem"
+    }
 });
 
 const styles = StyleSheet.create({
@@ -188,7 +180,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFF0",
         margin: "5%",
         borderColor: "#000",
-        borderWidth: 2,
+        borderWidth: 2
     },
     headerStyle: {
         alignItems: "center",
@@ -199,7 +191,7 @@ const styles = StyleSheet.create({
     buttonStyle: {
         width: "95%",
         alignSelf: "center",
-        justifyContent: "center",
+        justifyContent: "center"
     },
     buttonTextStyle: {
         fontWeight: "bold",
