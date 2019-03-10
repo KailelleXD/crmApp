@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { Text, StyleSheet } from 'react-native';
 import {
     Container,
     Header,
@@ -8,22 +8,55 @@ import {
     Form,
     Item,
     Input
-} from "native-base";
+} from 'native-base';
+import firebase from 'firebase';
+import Loader from './Loader';
 
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
-            password: "",
+            username: '',
+            password: '',
+            error: '',
             loading: false
         };
     }
 
     onButtonPress() {
-        console.log("button has been clicked!");
-        console.log(`username: ${this.state.username}`);
-        console.log(`password: ${this.state.password}`);
+        const { username, password } = this.state;
+        this.setState({
+            error: '',
+            loading: true
+        });
+
+        setTimeout(() => {
+            console.log('timeout!')
+            firebase.auth().signInWithEmailAndPassword(username, password)
+                .then(this.onAuthSuccess.bind(this))
+                .catch(() => {
+                    firebase.auth().createUserWithEmailAndPassword(username, password)
+                        .then(this.onAuthSuccess.bind(this))
+                        .catch(this.onAuthFailed.bind(this))
+                })
+        }, 3000);
+
+    }
+
+    onAuthSuccess() {
+        this.setState({
+            username: '',
+            password: '',
+            error: '',
+            loading: false
+        });
+    }
+
+    onAuthFailed() {
+        this.setState({
+            error: 'Authentication Failed',
+            loading: false
+        });
     }
 
     renderLoader() {
@@ -46,9 +79,22 @@ export default class Login extends Component {
         }
     }
 
+    // RENDER FUNCTIONS ////
+
+    ifErrorStyle() {
+        if(this.state.error === '') {
+            return styles.noError;
+        } else {
+            return styles.withError;
+        }
+    }
+
     render() {
         return (
-            <Container style={styles.container}>
+            <Container style={[
+                    styles.container,
+                    this.ifErrorStyle()
+                ]}>
                 <Header style={styles.headerStyle}>
                     <Text style={[this.props.textSize, this.props.textColor]}>
                         {this.props.title}
@@ -87,6 +133,9 @@ export default class Login extends Component {
                                 }}
                             />
                         </Item>
+                        <Text style={styles.errorMessage}>
+                            {this.state.error}
+                        </Text>
                         {this.renderLoader()}
                     </Form>
                 </Content>
@@ -98,12 +147,17 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        aspectRatio: 1.6 / 1,
         backgroundColor: "#FFFFF0",
         margin: "5%",
         borderColor: "#000",
         borderWidth: 2,
         borderRadius: 27
+    },
+    noError: {
+        aspectRatio: 1.59 / 1,
+    },
+    withError: {
+        aspectRatio: 1.5 / 1,
     },
     headerStyle: {
         alignItems: "center",
@@ -120,5 +174,10 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         fontWeight: "bold",
         padding: "5%"
+    },
+    errorMessage: {
+        color: "#FF0000",
+        alignSelf: 'center',
+        margin: 0
     }
 });
