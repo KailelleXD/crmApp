@@ -2,12 +2,17 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import firebase from "firebase";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
 
 import Loader from "./src/components/Loader";
 import Login from "./src/components/Login";
 import PeopleList from "./src/components/PeopleList";
+import reducers from "./src/reducers/PeopleReducer";
 
 import EStyleSheet from "react-native-extended-stylesheet";
+
+const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 EStyleSheet.build({
     $rem: 16,
@@ -67,13 +72,15 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Grid>
-                    <Row size={0} />
-                    <Row size={2}>{this.renderInitialView()}</Row>
-                    <Row size={0} />
-                </Grid>
-            </View>
+            <Provider store={store}>
+                <View style={styles.container}>
+                    <Grid>
+                        <Row size={0} />
+                        <Row size={2}>{this.renderInitialView()}</Row>
+                        <Row size={0} />
+                    </Grid>
+                </View>
+            </Provider>
         );
     }
 }
