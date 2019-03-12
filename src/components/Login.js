@@ -13,8 +13,6 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import firebase from "firebase";
 import Loader from "./Loader";
 
-const { height, width } = Dimensions.get("window");
-
 export default class Login extends Component {
     constructor(props) {
         super(props);
